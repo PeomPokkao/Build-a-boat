@@ -33,7 +33,7 @@ local Tab3 = GUI:Tap("MISC")
 Tab1:Toggle("AutoFarm", function(valuea)
     _G.Farmna = valuea
 
-    function CheckCFrame()
+    spawn(function()
         repeat
             wait()
             if _G.Farmna == true then
@@ -48,8 +48,8 @@ Tab1:Toggle("AutoFarm", function(valuea)
                 wait(15)
             end
         until _G.Farmna == false
-    end    
-
+    end)
+    
 end)
 
 Tab1:Dropdown("Select Chest",{"Common Chest", "Uncommon Chest", "Rare Chest", "Epic Chest", "Legendary Chest"},function(t)
@@ -210,7 +210,7 @@ Tab2:Button("Start Teleport",function(value)
 
 end)
 
-Tab2:Button("Rejoin",function(value)
+Tab3:Button("Rejoin",function(value)
 
     pcall (function()
         while wait() do
@@ -224,7 +224,7 @@ Tab2:Button("Rejoin",function(value)
 
 end)
 
-Tab2:Button("Hop Server",function(value)
+Tab3:Button("Hop Server",function(value)
     pcall(function()
         while wait() do
             local PlaceID = game.PlaceId
@@ -292,7 +292,7 @@ Tab2:Button("Hop Server",function(value)
     end)
 end)
 
-Tab2:Button("Hop low Server",function(value)
+Tab3:Button("Hop low Server",function(value)
     spawn(function()
 
         while wait() do
