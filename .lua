@@ -30,7 +30,26 @@ local Tab1 = GUI:Tap("General")
 local Tab2 = GUI:Tap("Teleport")
 local Tab3 = GUI:Tap("MISC")
 
-Tab1:Toggle("AutoFarm", function(value)
+Tab1:Toggle("AutoFarm", function(valuea)
+    _G.Farmna = valuea
+
+    function CheckCFrame()
+        repeat
+            wait()
+            if _G.Farmna == true then
+                repeat wait()
+                    TP(CFrame.new(-51.631439208984375, 46.04425811767578, 1283.8319091796875))
+                until game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(-51.631439208984375, 46.04425811767578, 1283.8319091796875)
+            elseif game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(-51.631439208984375, 46.04425811767578, 1283.8319091796875) then
+                repeat wait()
+                    TP(CFrame.new(-56.33596420288086, -362.31268310546875, 9488.3173828125))
+                until game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(-56.33596420288086, -362.31268310546875, 9488.3173828125)
+            elseif game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(-56.33596420288086, -362.31268310546875, 9488.3173828125) then
+                wait(15)
+            end
+        until _G.Farmna == false
+    end    
+
 end)
 
 Tab1:Dropdown("Select Chest",{"Common Chest", "Uncommon Chest", "Rare Chest", "Epic Chest", "Legendary Chest"},function(t)
@@ -189,4 +208,113 @@ Tab2:Button("Start Teleport",function(value)
 
     end
 
+end)
+
+Tab2:Button("Rejoin",function(value)
+
+    pcall (function()
+        while wait() do
+            local ts = game:GetService("TeleportService")
+            
+            local p = game:GetService("Players").LocalPlayer
+            
+            ts:Teleport(game.PlaceId, p)
+        end
+    end)
+
+end)
+
+Tab2:Button("Hop Server",function(value)
+    pcall(function()
+        while wait() do
+            local PlaceID = game.PlaceId
+     local AllIDs = {}
+     local foundAnything = ""
+     local actualHour = os.date("!*t").hour
+     local Deleted = false
+     function TPReturner()
+        local Site;
+        if foundAnything == "" then
+           Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+        else
+           Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+        end
+        local ID = ""
+        if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+           foundAnything = Site.nextPageCursor
+        end
+        local num = 0;
+        for i,v in pairs(Site.data) do
+           local Possible = true
+           ID = tostring(v.id)
+           if tonumber(v.maxPlayers) > tonumber(v.playing) then
+                 for _,Existing in pairs(AllIDs) do
+                    if num ~= 0 then
+                       if ID == tostring(Existing) then
+                             Possible = false
+                       end
+                    else
+                       if tonumber(actualHour) ~= tonumber(Existing) then
+                             local delFile = pcall(function()
+                                -- delfile("NotSameServers.json")
+                                AllIDs = {}
+                                table.insert(AllIDs, actualHour)
+                             end)
+                       end
+                    end
+                    num = num + 1
+                 end
+                 if Possible == true then
+                    table.insert(AllIDs, ID)
+                    wait()
+                    pcall(function()
+                       -- writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                       wait()
+                       game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                    end)
+                    wait(.1)
+                 end
+           end
+        end
+     end
+     function Teleport() 
+        while wait() do
+           pcall(function()
+                 TPReturner()
+                 if foundAnything ~= "" then
+                    TPReturner()
+                 end
+           end)
+        end
+     end
+     Teleport()
+     end
+    end)
+end)
+
+Tab2:Button("Hop low Server",function(value)
+    spawn(function()
+
+        while wait() do
+
+            local Http = game:GetService("HttpService")
+            local TPS = game:GetService("TeleportService")
+            local Api = "https://games.roblox.com/v1/games/"
+            
+            local _place = game.PlaceId
+            local _servers = Api.._place.."/servers/Public?sortOrder=Asc&limit=100"
+            function ListServers(cursor)
+                local Raw = game:HttpGet(_servers .. ((cursor and "&cursor="..cursor) or ""))
+                return Http:JSONDecode(Raw)
+            end
+            local Server, Next; repeat
+                local Servers = ListServers(Next)
+                Server = Servers.data[1]
+                Next = Servers.nextPageCursor
+            until Server
+            
+            TPS:TeleportToPlaceInstance(_place,Server.id,game.Players.LocalPlayer)
+
+        end
+    end)
 end)
