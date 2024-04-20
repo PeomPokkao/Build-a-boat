@@ -32,21 +32,18 @@ local Tab3 = GUI:Tap("MISC")
 
 Tab1:Button("AuToFarm Lv.1",function(value)
     spawn(function()
-        while wait() do
-            TP(CFrame.new(-51.631439208984375, 46.04425811767578, 1283.8319091796875))
-        end
+        TP(CFrame.new(-51.631439208984375, 46.04425811767578, 1283.8319091796875))
     end)
 end)
 
 Tab1:Button("AuToFarm Lv.2",function(value)
     spawn(function()
-        while wait() do
-            TP(CFrame.new(-56.33596420288086, -362.31268310546875, 9488.3173828125))
-        end
+        TP(CFrame.new(-56.33596420288086, -362.31268310546875, 9488.3173828125))
     end)
 end)
 
-Tab1:Toggle("PartNeon",function(value)
+Tab1:Button("PartNeon",function(value)
+
     _G.pno = value
 
     spawn(function()
