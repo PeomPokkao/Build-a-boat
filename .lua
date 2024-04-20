@@ -30,26 +30,78 @@ local Tab1 = GUI:Tap("General")
 local Tab2 = GUI:Tap("Teleport")
 local Tab3 = GUI:Tap("MISC")
 
-Tab1:Toggle("AutoFarm", function(valuea)
-    _G.Farmna = valuea
+Tab1:Button("AuToFarm Lv.1",function(value)
+    spawn(function()
+        while wait() do
+            TP(CFrame.new(-51.631439208984375, 46.04425811767578, 1283.8319091796875))
+        end
+    end)
+end)
+
+Tab1:Button("AuToFarm Lv.2",function(value)
+    spawn(function()
+        while wait() do
+            TP(CFrame.new(-56.33596420288086, -362.31268310546875, 9488.3173828125))
+        end
+    end)
+end)
+
+Tab1:Toggle("PartNeon",function(value)
+    _G.pno = value
 
     spawn(function()
-        repeat
-            wait()
-            if _G.Farmna == true then
-                repeat wait()
-                    TP(CFrame.new(-51.631439208984375, 46.04425811767578, 1283.8319091796875))
-                until game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(-51.631439208984375, 46.04425811767578, 1283.8319091796875)
-            elseif game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(-51.631439208984375, 46.04425811767578, 1283.8319091796875) then
-                repeat wait()
-                    TP(CFrame.new(-56.33596420288086, -362.31268310546875, 9488.3173828125))
-                until game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(-56.33596420288086, -362.31268310546875, 9488.3173828125)
-            elseif game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame == CFrame.new(-56.33596420288086, -362.31268310546875, 9488.3173828125) then
-                wait(15)
-            end
-        until _G.Farmna == false
-    end)
+        pcall(function()
+            game:GetService("RunService").Heartbeat:Connect(function()
+                if _G.pno then
+                    if not game.Workspace:FindFirstChild("LOL") then
+                        local PartNeon = Instance.new("Part")
+                        PartNeon.Name = "LOL"
+                        PartNeon.Parent = game.Workspace
+                        PartNeon.Anchored = true
+                        PartNeon.Transparency = 0
+                        PartNeon.Size = Vector3.new(30, 0.5, 30)
+                        PartNeon.Material = "Neon"
     
+                        local colors = {
+                            Color3.fromRGB(255, 0, 0),
+                            Color3.fromRGB(255, 155, 0),
+                            Color3.fromRGB(255, 255, 0),
+                            Color3.fromRGB(0, 255, 0),
+                            Color3.fromRGB(0, 255, 255),
+                            Color3.fromRGB(0, 155, 255),
+                            Color3.fromRGB(255, 0, 255),
+                            Color3.fromRGB(255, 0, 155)
+                        }
+    
+                        local index = 1
+    
+                        while true do
+                            wait(0.1)
+                            game:GetService('TweenService'):Create(
+                                PartNeon,
+                                TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),
+                                {Color = colors[index]}
+                            ):Play()
+    
+                            index = index % #colors + 1
+                            wait(0.5)
+                        end
+                    else
+                        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+                        game.Workspace.LOL.CFrame = CFrame.new(playerPos.X, playerPos.Y - 3.92, playerPos.Z)
+                    end
+                else
+                    if not _G.pno then
+                        local lol = game.Workspace:FindFirstChild("LOL")
+                        if lol then
+                            lol:Destroy()
+                        end
+                    end
+                end
+            end)
+        end)
+    end)
+
 end)
 
 Tab1:Dropdown("Select Chest",{"Common Chest", "Uncommon Chest", "Rare Chest", "Epic Chest", "Legendary Chest"},function(t)
