@@ -44,60 +44,59 @@ end)
 
 Tab1:Button("PartNeon",function(value)
 
-    _G.pno = value
+    _G.PartNeon = true
 
-    spawn(function()
-        pcall(function()
-            game:GetService("RunService").Heartbeat:Connect(function()
-                if _G.pno then
-                    if not game.Workspace:FindFirstChild("LOL") then
-                        local PartNeon = Instance.new("Part")
-                        PartNeon.Name = "LOL"
-                        PartNeon.Parent = game.Workspace
-                        PartNeon.Anchored = true
-                        PartNeon.Transparency = 0
-                        PartNeon.Size = Vector3.new(30, 0.5, 30)
-                        PartNeon.Material = "Neon"
-    
-                        local colors = {
-                            Color3.fromRGB(255, 0, 0),
-                            Color3.fromRGB(255, 155, 0),
-                            Color3.fromRGB(255, 255, 0),
-                            Color3.fromRGB(0, 255, 0),
-                            Color3.fromRGB(0, 255, 255),
-                            Color3.fromRGB(0, 155, 255),
-                            Color3.fromRGB(255, 0, 255),
-                            Color3.fromRGB(255, 0, 155)
-                        }
-    
-                        local index = 1
-    
-                        while true do
-                            wait(0.1)
-                            game:GetService('TweenService'):Create(
-                                PartNeon,
-                                TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),
-                                {Color = colors[index]}
-                            ):Play()
-    
-                            index = index % #colors + 1
-                            wait(0.5)
-                        end
-                    else
-                        local playerPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-                        game.Workspace.LOL.CFrame = CFrame.new(playerPos.X, playerPos.Y - 3.92, playerPos.Z)
+spawn(function()
+    pcall(function()
+        game:GetService("RunService").Heartbeat:Connect(function()
+            if _G.PartNeon then
+                if not game.Workspace:FindFirstChild("LOL") then
+                    local Paertaiteen = Instance.new("Part")
+                    Paertaiteen.Name = "LOL"
+                    Paertaiteen.Parent = game.Workspace
+                    Paertaiteen.Anchored = true
+                    Paertaiteen.Transparency = 0
+                    Paertaiteen.Size = Vector3.new(30, 0.5, 30)
+                    Paertaiteen.Material = "Neon"
+
+                    local colors = {
+                        Color3.fromRGB(255, 0, 0),
+                        Color3.fromRGB(255, 155, 0),
+                        Color3.fromRGB(255, 255, 0),
+                        Color3.fromRGB(0, 255, 0),
+                        Color3.fromRGB(0, 255, 255),
+                        Color3.fromRGB(0, 155, 255),
+                        Color3.fromRGB(255, 0, 255),
+                        Color3.fromRGB(255, 0, 155)
+                    }
+
+                    local index = 1
+
+                    while true do
+                        wait(0.1)
+                        game:GetService('TweenService'):Create(
+                            Paertaiteen,
+                            TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut),
+                            {Color = colors[index]}
+                        ):Play()
+
+                        index = index % #colors + 1
+                        wait(0.5)
                     end
                 else
-                    if not _G.pno then
-                        local lol = game.Workspace:FindFirstChild("LOL")
-                        if lol then
-                            lol:Destroy()
-                        end
+                    game.Workspace.LOL.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.X, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y - 3.92, game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Z)
+                end
+            else
+                if _G.PartNeon == false then
+                    local lol = game.Workspace:FindFirstChild("LOL")
+                    if lol then
+                        lol:Destroy()
                     end
                 end
-            end)
+            end
         end)
     end)
+end)
 
 end)
 
